@@ -15,9 +15,10 @@
 
             <input type="text" id="visibility" value="Enter Group Visibility">
             <br>
-            <button onclick = "setData()" >Set Data</button>
-            <button onclick = "deleteData()" >Delete data</button>
+            <button onclick = "setData()" >Create Group</button>
+            <button onclick = "deleteData()" >Delete Group</button>
             <div id='ListGroups'></div>
+            <p id="delete"></p>
     </body>
     
     <script>
@@ -109,15 +110,19 @@
             ref.child(sStudentId).set(data);
             ref = database.ref('GroupInfo/'+ sStudentId);
             ref.once('value', gotData1, errData);
+            document.getElementById("delete").innerHTML= ""
+
         }
 
         function deleteData()
         {
             var database = firebase.database();
-            dStudentId = parseInt(document.getElementById("studentId").value);
-
-            ref = database.ref('StudentInfo/' + dStudentId);
+            sName = document.getElementById("name").value;
+            
+            ref = database.ref('GroupInfo/' + sName);
             ref.set(null);
+            document.getElementById("delete").innerHTML= "Group has been Deleted"
+            
         }
     </script>
 </html>
