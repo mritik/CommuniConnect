@@ -1,0 +1,27 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+    
+        <ul id="messages"></ul>
+        <ul id="user"></ul>
+        <input id="userbox" type="text" value="User">
+        <input id="messagebox" type="text" value="Message">
+        <button id="button">Send</button>    
+    </body>
+        
+    <script>
+        var textbox = document.getElementById("textbox");
+        var button = document.getElementById("button");
+
+        button.addEventListener("click", function(){
+        var newMessage = document.createElement("li");
+        newMessage.innerHTML = userbox.value + " - " + messagebox.value;
+        messages.appendChild(newMessage);
+        messagebox.value = "";
+        userbox.value = "";
+        });
+
+</script>
+
