@@ -1,0 +1,122 @@
+<html>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+        <!--My Styles-->
+        <title>CommuniConnect</title>
+    </head>
+    <body class="grey white">
+       
+        <h3 class="center-align black-text">CommuniConnect</h3>
+        <br>
+        <br>
+        <div class="container login-container">
+
+          <form id="login">
+            <div class=" card col-md-6 login-form-1 blue lighten-4" style="border-radius: 0px;">
+
+                <h5 class="text-white"><b>Log into an existing account:</b></h5>
+
+                <div class="container">
+                    <div class="form-group">
+                      <label for="email"><b>Email</b></label>
+                      <input type="text" placeholder="Enter Email" class="form-control" name="login-email" value="" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="psw"><b>Password</b></label>
+                      <input type="password" placeholder="Enter Password" class="form-control" name="login-psw" value="" required>
+                    </div>
+                  <br>
+                    <div class="form-group">
+                    <span class="psw"><a href="#">Forgot Password?</a></span>
+                    </div>
+                </div>
+                <br>
+                <div class="container">
+                    <div class="form-group">
+                        <a href="index.html">
+                            <button class="btn waves-effect waves-light" type="submit" value="Login">Log In
+                            <i class="material-icons right">send</i> 
+                            </button>
+                        </a>
+                        </div>
+                </div>
+
+            </div>
+          </form>
+        </div>
+        <br>
+        <div class="container signup-container">
+
+          <form id="signup">
+            <div class=" card col-md-6 sign-up-form-1 blue lighten-4" style="border-radius: 0px;">
+
+                <h5 class="text-white"><b>Create a New Account:</b></h5>
+                        <div class="container">
+                            <p>Please fill in this form to create an account.</p>
+                            <hr>
+                            <div class="form-group">
+                              <label for="email"><b>Email</b></label>
+                              <input type="text" placeholder="Enter Email" class="form-control" name="signup-email" value="" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="uname"><b>Username</b></label>
+                              <input type="text" placeholder="Enter Username" class="form-control" name="signup-uname" value="" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="psw"><b>Password</b></label>
+                              <input type="password" placeholder="Enter Password" class="form-control" name="signup-psw" value="" required>
+                            </div>
+                            <div class="form-group"> 
+                                <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+                            </div>
+
+                          <div class="clearfix">
+                              <div class="form-group">
+                                  <button href=index.html class="btn waves-effect waves-light" type="submit" value="Create Account">Sign Up
+                                    <i class="material-icons right">send</i>
+                                  </button>
+                              </div>
+                            
+                          </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- The core Firebase JS SDK -->
+        <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
+
+        <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
+
+        <script>
+          // My app's Firebase configuration
+          var config = {
+                apiKey: "AIzaSyDsCfVVy7bHnGaKoVZ_ikwzahwQycMQoMs",
+                authDomain: "user-auth-d707b.firebaseapp.com",
+                databaseURL: "https://user-auth-d707b-default-rtdb.firebaseio.com",
+                projectId: "user-auth-d707b",
+                storageBucket: "user-auth-d707b.appspot.com",
+                messagingSenderId: "549822857981",
+                appId: "1:549822857981:web:7c15df144daf04f6e7b494",
+                measurementId: "G-QH58VF587C"
+          };
+          // Initialize Firebase
+          firebase.initializeApp(config);
+          firebase.analytics();
+
+          const auth = firebase.auth();
+          const db = firebase.firestore();
+        </script>
+
+    </body>
+</html>
