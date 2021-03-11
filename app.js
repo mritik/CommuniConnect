@@ -1,8 +1,8 @@
 function checkUserFirstName()
 {
-    var userFirstName = document.getElementById("userFirstName").value;
+    var userSurname = document.getElementById("userFirstName").value;
     var flag = false;
-    if(userFirstName === "")
+    if(userSurname === "")
         flag = true;
     if(flag)
         document.getElementById("userFirstNameError").style.display = "block";
@@ -94,12 +94,16 @@ function signUp()
             {
                 userFirstName: userFirstName,
                 userSurname: userSurname,
-                userCountry: userCountry,
-                userBio: userBio,
+                userEmail: userEmail,
+                userPassword: userPassword,
+                userCountry: "Canada",
+                userFavouriteBook: "Book Title",
+                userFavouriteGenre: "Genre",
+                userBio: "User biography",
             }
             ref.child(uid).set(userData);
             console.log("Account Created");
-            window.open("../index.html");
+            window.open("index.html");
         }).catch((error) => 
         {
             var errorCode = error.code;
@@ -161,7 +165,7 @@ function signIn()
                 if (user) 
                 {
                     localStorage.userID = user.uid;
-                    window.location = './pages/data.html';
+                    window.location = 'index.html';
                 }
             });
         }).catch((error) => 
@@ -179,6 +183,7 @@ function saveProfile()
     let userFirstName = document.getElementById("userFirstName").value 
     let userSurname = document.getElementById("userSurname").value 
     let userCountry = document.getElementById("userCountry").value 
+    let userGrade = document.getElementById("userGrade").value 
     let userBio = document.getElementById("userBio").value
     var userFirstNameFormatValidate = /^([A-Za-z.\s_-])/; 
     var checkUserFirstNameValid = userFirstName.match(userFirstNameFormatValidate);
@@ -194,11 +199,12 @@ function saveProfile()
             userFirstName: userFirstName,
             userSurname: userSurname,
             userCountry: userCountry,
+            userGrade: userGrade,
             userBio: userBio
         }
         firebaseRef.child(localStorage.userID).set(userData);
         console.log("Profile Updated");
-        window.location="data.html";
+        window.location="index.html";
     }
 }
 
@@ -207,10 +213,11 @@ function signOut()
     firebase.auth().signOut().then(function() 
     {
         console.log("Sign Out Successful");
-        window.open("../index.html", "_self");
+        window.open("index.html", "_self");
     }).catch(function(error) 
     {
         let errorMessage = error.message;
         console.log(errorMessage);
     });
 }
+
