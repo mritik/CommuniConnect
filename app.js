@@ -97,8 +97,7 @@ function signUp()
                 userEmail: userEmail,
                 userPassword: userPassword,
                 userCountry: "Canada",
-                userFavouriteBook: "Book Title",
-                userFavouriteGenre: "Genre",
+                userGrade: "1-12"
                 userBio: "User biography",
             }
             ref.child(uid).set(userData);
@@ -221,3 +220,62 @@ function signOut()
     });
 }
 
+function checkUserFirstName()
+{
+    var userSurname = document.getElementById("userFirstName").value;
+    var flag = false;
+    if(userSurname === "")
+        flag = true;
+    if(flag)
+        document.getElementById("userFirstNameError").style.display = "block";
+    else
+        document.getElementById("userFirstNameError").style.display = "none";
+}
+
+function checkUserSurname()
+{
+    var userSurname = document.getElementById("userSurname").value;
+    var flag = false;
+    if(userSurname === "")
+        flag = true;
+    if(flag)
+        document.getElementById("userSurnameError").style.display = "block";
+    else
+        document.getElementById("userSurnameError").style.display = "none";
+}
+
+function checkGroupName()
+{
+    var groupName = document.getElementById("groupName").value;
+    var flag = false;
+    if(groupName === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupNameError").style.display = "block";
+    else
+        document.getElementById("groupNameError").style.display = "none";
+}
+
+function checkGroupDescription()
+{
+    var groupDescription = document.getElementById("groupDescription").value;
+    var flag = false;
+    if(groupDescription === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupDescriptionError").style.display = "block";
+    else
+        document.getElementById("groupDescriptionError").style.display = "none";
+}
+
+function checkMemberCap()
+{
+    var memberCap = document.getElementById("memberCap").value;
+    var flag = false;
+    if(memberCap === "")
+        flag = true;
+    if(flag)
+        document.getElementById("memberCap").style.display = "block";
+    else
+        document.getElementById("memberCap").style.display = "none";
+}
