@@ -2,15 +2,26 @@
     <head>
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-      <!--Import materialize.css-->
-      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <!--Import materialize.css and bootstrap-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
       <!--Import JQuery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
+      <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+      <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css" />
+      <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
+      <script src="app.js"></script>
+      <script src="global.js"></script>
+
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link rel="stylesheet" href="styles.css"/>
     </head>
+
 
     <body class="blue lighten-4">
         
@@ -35,8 +46,8 @@
                 </ul>
               <a href="index.html" class="brand-logo center">CommuniConnect</a>
               <ul class="right hide-on-med-and-down">
-                <li><a href="">Profile</a></li>
-                <li><a href="">Log Out</a></li>
+                <li><a href="profile.html">Profile</a></li>
+                <li><a href="signIn.html" onclick="signOut()">Sign Out</a></li>
               </ul>
             </div>
         </nav>
@@ -47,21 +58,61 @@
         <br><br><br>
         <div class="container">
             <div class="col s12 m6 center-align">
-              <div class="card blue darken-1 card-panel hoverable centerdiv">
-                <div class="card-content white-text">
-                  <span class="card-title">Search for and Join New Groups</span>
-                    <p>Find People with Similar Interests!</p>
-                    <br>
-                    <input type="text" placeholder="Search Groups..." name="search" id="searchText"> 
-                    <button id="searchGroups" type="submit"><i class="material-icons">send</i></button>
-                    
-                    
-                    <p>Or Create Your Own Groups and Invite Your Friends</p>
-                    <button id="createGroup" type="button"><i class="material-icons">send</i></button>
+                <div class="card blue darken-1 card-panel hoverable centerdiv">
+                    <div class="card-content white-text">
+                      <span class="card-title">Search for and Join New Groups</span>
+                        <p>Find People with Similar Interests!</p>
+                        <br>
+                        <input type="text" placeholder="Search Groups..." name="search" id="searchText"> 
+                        <button id="searchGroups" type="submit"><i class="material-icons">send</i></button>
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
+                  
+                    
+        <div class="container">  
+            <div class="col s12 m6 center-align">
+                <div class="row">
+                    <form class="col s12">
+                        <div class="card blue darken-1 card-panel hoverable centerdiv">
+                        <div class="card-content white-text">
+                            <h5 class="h2 text-center text-dark mb-3">Create New Group</h5>
+                            <p>Create Your Own Group and Invite Your Friends</p>
+                            <br>
+                            <div id="newGroupForm">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="text" class="validate" id="groupName" onblur="checkGroupName()" placeholder="Name">
+                                        <label for="groupName">Group Name</label>
+                                        <small id="groupNameError" class="form-text text-danger" style="display:none;">This Field must be filled.</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="text" class="validate" id="groupDescription" onblur="checkGroupDescription()" placeholder="Description">
+                                        <label for="groupDescription">Group Description</label>
+                                        <small id="groupDescriptionError" class="form-text text-danger" style="display:none;">This Field must be filled.</small>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input type="number" class="validate" id="memberCap" onblur="checkmemberCap()" placeholder="20">
+                                        <label for="memberCap">Total Members</label>
+                                        <small id="memberCapError" class="form-text text-danger" style="display:none;">This Field must be filled</small>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button type="button" class="btn" onclick="groupSignUp()">Sign Up Group</button>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>               
+
         <br>
         <br>
         <br>
@@ -80,6 +131,17 @@
               </div>
         </footer>
         
+        <style>
+            /* label focus color */
+           .input-field input[type=text]:focus + label {
+             color: #fcfcfc;
+            }
+            /* label underline focus color */
+               .input-field input[type=text]:focus {
+                 border-bottom: 1px solid #fcfcfc;
+                 box-shadow: 0 1px 0 0 #fcfcfc;
+            }
+        </style>
 
         <!--JavaScript at end of body for optimized loading-->
         <script type="text/javascript" src="js/materialize.min.js"></script>
