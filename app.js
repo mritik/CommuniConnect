@@ -219,6 +219,7 @@ function signUp()
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            document.getElementById("userSignUpError").innerHTML = errorMessage;
         });
 }
 
@@ -283,6 +284,8 @@ function signIn()
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            document.getElementById("userLoginError").innerHTML = errorMessage;
+
         });
     }
 }
@@ -430,7 +433,26 @@ function signUpGroup()
         
 }
 
+function doesGroupExist()
+{
+    var groupName = document.getElementById("groupName").value;
+    var groupNameRef = firebase.database().ref("Groups/" + groupName + "/groupName");
 
+    
+    groupNameRef.once("value", function(snapshot) {
+      snapshot.forEach(function(child) {
+          if(child.key == 'groupName' && child.val() == groupName) {
+               document.getElementById("groupErrorText").style.display = "block";
+            return;
+          }
+      });
+    });
+    signUpGroup();
+
+
+        
+}
+/*
 function updateMyCreatedGroups()
 {
     var groupName = document.getElementById("groupName").value;
@@ -445,21 +467,59 @@ function updateMyCreatedGroups()
 
     groupRef.once("value", function(snapshot) {
       snapshot.forEach(function(child) {
-          //console.log('key=' + child.key + ', value=' + child.val());
           if(child.key == 'userId' && child.val() == myUser) {
             groupRef.update ({
                "groupName": updatedGroupName,
                "groupDescription": updatedGroupDescription,
                "memberCap": updatedMemberCap
             });
+               document.getElementById("groupEditorText").style.display = "block";
             return;
           }
       });
     });
 
-    console.log("User does not have Permission to Edit this Group");
+    console.log("User does not have Permission to Edit this Group")
     return;
 }   
+*/
+
+function updateMyCreatedGroups()
+{
+    var groupName = document.getElementById("groupName").value;
+    var updatedGroupName = document.getElementById("updatedGroupName").value;
+    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
+    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
+    var groupRef = firebase.database().ref("Groups/" + groupName);
+    var groupsRef = firebase.database().ref("Groups");
+    var myUser = localStorage.userID;
+    
+    console.log('user = ' + myUser + ', groupName = ' + groupName);
+    console.log('groupRef = ' + groupRef);
+
+    groupRef.once("value", function(snapshot) {
+      snapshot.forEach(function(child) {
+          if(child.key == 'userId' && child.val() == myUser) {
+            groupRef.set(null) 
+            var groupData = 
+            {
+                groupName: updatedGroupName,
+                groupDescription: updatedGroupDescription,
+                userId : localStorage.userID,
+                memberCap: updatedMemberCap,
+            }
+            groupsRef.child(updatedGroupName).set(groupData);
+            document.getElementById("groupEditorText").style.display = "block";
+            return;
+          }
+      });
+    });
+
+    console.log("User does not have Permission to Edit this Group")
+    document.getElementById("permissionsText").style.display = "block";
+    document.getElementById("groupEditorText").style.display = "none";
+    return;
+}  
 
 function showMyCreatedGroups()
 {
@@ -491,12 +551,31 @@ function showAllGroups()
 function deleteMyCreatedGroups()
 {
     var groupName = document.getElementById("groupName").value;
-    var database = firebase.database();
-    var ref = database.ref("Groups/" + groupName);
+    var groupRef = firebase.database().ref("Groups/" + groupName);
+    var firebaseRef = firebase.database().ref("Groups");
+    var myUser = localStorage.userID;
     
-    ref.remove(groupName);
-    console.log("Group Deleted");
+    console.log('user = ' + myUser + ', groupName = ' + groupName);
+    console.log('groupRef = ' + groupRef);
+
+    groupRef.once("value", function(snapshot) {
+      snapshot.forEach(function(child) {
+          console.log('key=' + child.key + ', value=' + child.val());
+          if(child.key == 'userId' && child.val() == myUser) {
+            groupRef.set(null)
+            document.getElementById("groupDeletedText").style.display = "block";
+            document.getElementById("permissionsText").style.display = "none";
+            return;
+          }
+      });
+    });
+
+    console.log("User does not have Permission to Delete this Group");
+    document.getElementById("permissionsText").style.display = "block";
+    document.getElementById("groupEditorText").style.display = "none";
+    return;
 }
+    
     
 
 
