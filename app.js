@@ -57,6 +57,77 @@ function checkUserBio()
     else
         document.getElementById("userBioError").style.display = "none";
 }
+function checkGroupName()
+{
+    var groupName = document.getElementById("groupName").value;
+    var flag = false;
+    if(groupName === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupNameError").style.display = "block";
+    else
+        document.getElementById("groupNameError").style.display = "none";
+}
+
+function checkGroupDescription()
+{
+    var groupDescription = document.getElementById("groupDescription").value;
+    var flag = false;
+    if(groupDescription === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupDescriptionError").style.display = "block";
+    else
+        document.getElementById("groupDescriptionError").style.display = "none";
+}
+
+function checkMemberCap()
+{
+    var memberCap = document.getElementById("memberCap").value;
+    var flag = false;
+    if(memberCap === "")
+        flag = true;
+    if(flag)
+        document.getElementById("memberCapError").style.display = "block";
+    else
+        document.getElementById("memberCapError").style.display = "none";
+}
+function checkUpdatedGroupName()
+{
+    var updatedGroupName = document.getElementById("updatedGroupName").value;
+    var flag = false;
+    if(updatedGroupName === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupNameError").style.display = "block";
+    else
+        document.getElementById("groupNameError").style.display = "none";
+}
+
+function checkUpdatedGroupDescription()
+{
+    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
+    var flag = false;
+    if(updatedGroupDescription === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupDescriptionError").style.display = "block";
+    else
+        document.getElementById("groupDescriptionError").style.display = "none";
+}
+
+function checkUpdatedMemberCap()
+{
+    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
+    var flag = false;
+    if(updatedMemberCap === "")
+        flag = true;
+    if(flag)
+        document.getElementById("memberCapError").style.display = "block";
+    else
+        document.getElementById("memberCapError").style.display = "none";
+}
+
 
 function signUp()
 {
@@ -96,13 +167,13 @@ function signUp()
                 userSurname: userSurname,
                 userEmail: userEmail,
                 userPassword: userPassword,
-                userCountry: "Canada",
-                userGrade: "1-12"
-                userBio: "User biography",
+                userCountry: "Some Country",
+                userGrade: "1-12",
+                userBio: "User Biography"
             }
             ref.child(uid).set(userData);
             console.log("Account Created");
-            window.open("index.html");
+            window.open("signIn.html");
         }).catch((error) => 
         {
             var errorCode = error.code;
@@ -279,3 +350,121 @@ function checkMemberCap()
     else
         document.getElementById("memberCap").style.display = "none";
 }
+
+function signUpGroup()
+{
+    var groupName = document.getElementById("groupName").value;
+    var groupDescription = document.getElementById("groupDescription").value;
+    var memberCap = document.getElementById("memberCap").value;
+    {
+        var firebaseRef = firebase.database().ref("Groups");
+        var groupData = 
+        {
+            groupName: groupName,
+            groupDescription: groupDescription,
+            userId : localStorage.userID,
+            memberCap: memberCap,
+        }
+            firebaseRef.child(groupName).set(groupData);
+            document.getElementById("groupCreationText").style.display = "block";
+            console.log("Group Created");
+            window.open("page1.html");
+    }
+
+        
+}
+
+function updateMyCreatedGroups()
+{
+    var myUserId = firebase.auth().currentUser.uid;
+    var groupName = document.getElementById("groupName").value;
+    var groupDescription = document.getElementById("groupDescription").value;
+    var memberCap = document.getElementById("memberCap").value;
+    var updatedGroupName = document.getElementById("updatedGroupName").value;
+    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
+    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
+    
+    var firebaseRef = firebase.database().ref("Groups/" + groupName);
+    if (myUserId == firebaseRef)
+        firebaseRef.update('groupName')({
+        groupName: updatedGroupName,
+        groupDescription: updatedGroupDescription,
+        memberCap: updatedMemberCap,
+    });
+    else
+        console.log("User does not have Permission to Edit this Group");
+        document.getElementById("groupEditorText").style.display = "block";
+
+    
+}
+
+
+/*function updateMyCreatedGroups()
+{
+    var myUserId = firebase.auth().currentUser.uid;
+    var groupName = document.getElementById("groupName").value;
+    var groupDescription = document.getElementById("groupDescription").value;
+    var memberCap = document.getElementById("memberCap").value;
+    var updatedGroupName = document.getElementById("updatedGroupName").value;
+    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
+    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
+    
+    firebase.database().ref("Groups/" + groupName + "/" + myUserId).once(
+    
+    "value", snapshot => {
+    if (snapshot.exists()){
+        console.log("User Access Verified");
+    
+        firebaseRef.update('groupName')({
+            
+        groupName: updatedGroupName,
+        groupDescription: updatedGroupDescription,
+        memberCap: updatedMemberCap,
+       
+        }
+    )}};
+    else
+        console.log("User does not have Permission to Edit this Group");
+        document.getElementById("groupEditorText").style.display = "block"; 
+    )
+}
+*/   
+    
+    
+    
+    
+    
+
+function showMyCreatedGroups()
+{
+    var database = firebase.database();
+    var myUserId = firebase.auth().currentUser.uid;
+    var myGroups = firebaseRef.collection("Groups").where("userId", "==", myUserId.uid).get()
+    document.getElementById("myCreatedGroups").innerHTML = myGroups;
+}
+
+/*
+function showAllGroups()
+{
+    var allGroups = firebase.database().ref("Groups");
+    allGroups.on('value', (snapshot) => {
+        const data = snapshot.val();
+        document.getElementById("myJoinedGroups").innerHTML = data;
+    });
+
+    
+} 
+*/
+
+function deleteCreatedGroups()
+{
+    var database = firebase.database();
+    var ref = database.ref("Groups/" + groupName);
+    var myUserId = firebase.auth().currentUser.uid;
+    
+    ref.set(null);
+    console.log("Group Deleted");
+}
+    
+
+

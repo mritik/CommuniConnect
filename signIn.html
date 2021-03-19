@@ -12,17 +12,18 @@
                             <div id="signInForm">
                                 <h2 class="h2 text-center text-dark mb-3">Sign In</h2>
                                 <div class="form-group">
-                                    <label for="userInEmail">Email address<span class="text-danger ml-1">*</span></label>
+                                    <label for="userInEmail">Email Address<span class="text-danger ml-1">*</span></label>
                                     <input type="email" class="form-control" id="userInEmail" onblur="checkUserInEmail()"placeholder="mail@mail.com">
                                     <small id="userInEmailError" class="form-text text-danger" style="display:none;">Please check your login information.</small>
                                 </div>
                                 <div class="form-group">
                                     <label for="userInPassword">Password<span class="text-danger ml-1">*</span></label>
-                                    <input type="password" class="form-control" id="userInPassword" onblur="checkUserInPassword()" placeholder="password">
+                                    <input type="password" class="form-control" id="userInPassword" onblur="checkUserInPassword()" placeholder="Password">
                                     <small id="userInPasswordError" class="form-text text-danger" style="display:none;">Please check your password.</small>
                                 </div>
                                 <button type="button" class="btn btn-outline-primary text-uppercase mb-3" onclick="signIn()">Sign In</button>
                                 <p>Not a member yet? Become a member: <a href="signUp.html"><strong class="text-primary text-uppercase showSignUpForm">Sign Up</strong></a></p>
+                                <p id="userLoginError" class="form-text text-danger"></p>
                             </div>
                         </div>
                     </div>

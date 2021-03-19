@@ -23,6 +23,8 @@
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link rel="stylesheet" href="styles.css"/>
+      <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
 
 
@@ -63,16 +65,18 @@
             <div class="col s12 m6 center-align">
               <div class="card blue darken-1 card-panel hoverable centerdiv">
                 <div class="card-content white-text">
-                  <span class="card-title">Latest Messages</span>
+                  <span class="card-title">Messages</span>
                     <div class="input-field col s12">
-                        <input id="message" type="text" class="validate">
-                        <button id="sendmsg" type="submit"><i class="material-icons">send</i></button>
-                        <label for="message">Message</label>
+                        <input id="searchUser" type="text" placeholder="Search Users..." onclick="searchUser()">
+                        <button id="searchUser" type="submit"><i class="material-icons">search</i></button>
+                        <input id="message" type="text" placeholder="Send Message..." class="validate">
+                        <button id="sendMsg" type="submit"><i class="material-icons">upload</i></button>
                     </div>
                 </div>
               </div>
             </div>
         </div>
+        
         <br>
         <br>
         <br>

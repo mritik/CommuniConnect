@@ -58,6 +58,42 @@ function checkUserBio()
         document.getElementById("userBioError").style.display = "none";
 }
 
+function checkGroupName()
+{
+    var groupName = document.getElementById("groupName").value;
+    var flag = false;
+    if(groupName === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupNameError").style.display = "block";
+    else
+        document.getElementById("groupNameError").style.display = "none";
+}
+
+function checkGroupDescription()
+{
+    var groupDescription = document.getElementById("groupDescription").value;
+    var flag = false;
+    if(groupDescription === "")
+        flag = true;
+    if(flag)
+        document.getElementById("groupDescriptionError").style.display = "block";
+    else
+        document.getElementById("groupDescriptionError").style.display = "none";
+}
+
+function checkMemberCap()
+{
+    var memberCap = document.getElementById("memberCap").value;
+    var flag = false;
+    if(memberCap === "")
+        flag = true;
+    if(flag)
+        document.getElementById("memberCapError").style.display = "block";
+    else
+        document.getElementById("memberCapError").style.display = "none";
+}
+
 function signUp()
 {
     var userFirstName = document.getElementById("userFirstName").value;
@@ -81,7 +117,6 @@ function signUp()
     else if(checkUserPasswordValid == null)
         return checkUserPassword();
     else
-        firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).then((success) => 
         {
             var user = firebase.auth().currentUser;
             var uid;
@@ -105,10 +140,43 @@ function signUp()
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorCode);
-            console.log(errorMessage);
+            console.log(errorMessage);            
+            var writeError = document.getElementById("userSignUpError") = error.message;
+
         });
 }
 
+function signUpGroup()
+{
+    var groupName = document.getElementById("groupName").value;
+    var groupDescription = document.getElementById("groupDescription").value;
+    var memberCap = document.getElementById("memberCap").value;
+    
+
+    var checkGroupNameValid = groupName.match(userFirstNameFormatValidate);
+    var checkGroupDescriptionValid = groupDescription.match(userEmailFormatValidate);
+    var checkMemberCapValid = memberCap.match(userPasswordFormatValidate);
+
+    if(checkGroupNameValid == null)
+        return checkGroupName();
+    else if(groupDescription === "")
+        return checkGroupDescription();
+    else
+    {
+        var ref = firebase.database().ref('Groups');
+        var groupData = 
+        {
+            groupName: groupName,
+            groupDescription: groupDescription,
+            memberCap: memberCap,
+        }
+            firebaseRef.child(localStorage.userID).set(groupData);
+            console.log("Group Created");
+            window.open("page1.html");
+    }
+
+        
+}
 function checkUserInEmail()
 {
     var userInEmail = document.getElementById("userInEmail");
@@ -134,7 +202,6 @@ function checkUserInPassword()
     else
         document.getElementById("userInPasswordError").style.display = "none";
 }
-
 function signIn()
 {
     var userInEmail = document.getElementById("userInEmail").value;
@@ -170,6 +237,7 @@ function signIn()
             var errorMessage = error.message;
             console.log(errorCode);
             console.log(errorMessage);
+            var writeError = document.getElementById("userLoginError") = error.message;
         });
     }
 }

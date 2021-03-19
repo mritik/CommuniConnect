@@ -22,7 +22,7 @@
       <link rel="stylesheet" href="styles.css"/>
     </head>
 
-    <body class="blue lighten-4">
+    <body class="blue lighten-4" onload="showMyCreatedGroups()">
         
         
               <!-- Dropdown Structure -->
@@ -59,12 +59,8 @@
             <div class="col s12 m6 center-align">
               <div class="card blue darken-1 card-panel hoverable centerdiv">
                 <div class="card-content white-text">
-                  <span class="card-title">Your Groups</span>
-                    <p>Math Class: </p>
-                    <br>
-                    <p>Chess Club: </p>
-                    <br>
-                    <p>Computer Science: </p>
+                  <span class="card-title">Groups You Created</span>
+                    <p id="myCreatedGroups">Your Created Groups Appear Here: </p>
                     <br>
                 </div>
               </div>
@@ -73,6 +69,53 @@
         <br>
         <br>
         <br>
+        <div class="container">
+            <div class="col s12 m6 center-align">
+              <div class="card blue darken-1 card-panel hoverable centerdiv">
+                <div class="card-content white-text">
+                  <span class="card-title">Edit Created Groups</span>
+                    <p id="myJoinedGroups">Created Groups:</p>
+                    <div id="newGroupForm">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" id="groupName" placeholder="Group Name">
+                                <label for="updatedGroupName">Enter the Name of the Group You Want to Edit</label>
+                                <small id="groupNameError" class="form-text text-danger" style="display:none;">This Field must be filled.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" id="updatedGroupName" onblur="checkUpdatedGroupName()" placeholder="New Name">
+                                <label for="updatedGroupName">New Group Name</label>
+                                <small id="groupNameError" class="form-text text-danger" style="display:none;">This Field must be filled.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="text" class="validate" id="updatedGroupDescription" onblur="checkUpdatedGroupDescription()" placeholder="New Description">
+                                <label for="updatedGroupDescription">New Group Description</label>
+                                <small id="groupDescriptionError" class="form-text text-danger" style="display:none;">This Field must be filled.</small>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input type="number" class="validate" id="updatedMemberCap" onblur="checkUpdatedMemberCap()" placeholder="20">
+                                <label for="updatedMemberCap">New Total Members</label>
+                                <small id="memberCapError" class="form-text text-danger" style="display:none;">This Field must be filled</small>
+                            </div>
+                            <br>
+                            <br>
+                            <button type="button" class="btn" onclick="updateMyCreatedGroups()">Save Group</button>
+                            <br>
+                            <br>
+                            <p id="groupEditorText" style="display: none;">Group Edited Successfully</p>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+              </div>
+            </div>
+        </div>
         <br>
         <br>
         <br>

@@ -1,5 +1,5 @@
-const signupForm = document.querySelector('#signUpForm');
-signUpForm.addEventListener('submit', (e) => {
+const signupForm = document.querySelector('#signup');
+signupForm.addEventListener('submit', (e) => {
   e.preventDefault();
   
   // get user info

@@ -1,8 +1,6 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <script src="app.js"></script>
-        <script src="global.js"></script>
         
         <title>Sign Up</title>
     </head>
@@ -36,6 +34,7 @@
                                 </div>
                                 <button type="button" class="btn btn-outline-primary text-uppercase mb-3" onclick="signUp()">Sign Up</button>
                                 <p>Already a member? Sign in: <a href="signIn.html"><strong class="text-primary text-uppercase showSignInForm">Sign In</strong></a></p>
+                                <p id="userSignUpError" class="form-text text-danger"></p>
                             </div>
                         </div>
                     </div>
@@ -53,6 +52,7 @@
         <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
         <script src="app.js"></script>       
         <script src="global.js"></script>
+        <script src="signup.js"></script>
 
 
 
