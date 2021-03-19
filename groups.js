@@ -40,6 +40,7 @@ function submitForm(e){
         memberCap: memberCap,
     })
   }
+}
 
 const database = firebase.database();
 const rootRef = database.ref('Groups');

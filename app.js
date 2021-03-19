@@ -1,3 +1,42 @@
+var config = 
+    {
+        apiKey: "AIzaSyDsCfVVy7bHnGaKoVZ_ikwzahwQycMQoMs",
+        authDomain: "user-auth-d707b.firebaseapp.com",
+        databaseURL: "https://user-auth-d707b-default-rtdb.firebaseio.com",
+        projectId: "user-auth-d707b",
+        storageBucket: "user-auth-d707b.appspot.com",
+        messagingSenderId: "549822857981",
+        appId: "1:549822857981:web:7c15df144daf04f6e7b494",
+        measurementId: "G-QH58VF587C"
+    };
+    firebase.initializeApp(config); 
+
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    console.log(user + "Signed In")
+    var user = firebase.auth().currentUser.uid; 
+  }
+  else {
+    console.log("User Not Signed In")
+  }
+})
+
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
+  .then(() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    return firebase.auth().signInWithEmailAndPassword(userInEmail, userInEmail);
+  })
+  .catch((error) => {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
+
 function checkUserFirstName()
 {
     var userSurname = document.getElementById("userFirstName").value;
@@ -247,6 +286,23 @@ function signIn()
         });
     }
 }
+/*
+function checkUserSignedIn()
+{
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+        console.log("User Signed In")
+        }
+        else {
+        console.log("User Not Signed In")
+        window.location = 'signIn.html';
+        }
+    })
+    
+    
+    
+}
+*/
 
 function saveProfile()
 {
@@ -374,6 +430,34 @@ function signUpGroup()
         
 }
 
+
+function updateMyCreatedGroups()
+{
+    var groupName = document.getElementById("groupName").value;
+    var updatedGroupName = document.getElementById("updatedGroupName").value;
+    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
+    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
+    var firebaseRef = firebase.database().ref("Groups");
+
+    
+    console.log(localStorage.userID);
+    firebase.database().ref("Groups/" + groupName + "/userId/" + localStorage.userID).once("value", snapshot => {
+        
+        if (snapshot.exists()){
+            console.log("User Access Verified");
+
+            firebaseRef.child(groupName).update({'groupName' : updatedGroupName, 'groupDescription' : updatedGroupDescription,'memberCap' : updatedMemberCap})
+            document.getElementById("groupEditorText").style.display = "block"; 
+        }
+        else
+            console.log("User does not have Permission to Edit this Group");
+            console.log(snapshot.key);
+    });
+
+}
+
+
+/*
 function updateMyCreatedGroups()
 {
     var myUserId = firebase.auth().currentUser.uid;
@@ -384,39 +468,13 @@ function updateMyCreatedGroups()
     var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
     var updatedMemberCap = document.getElementById("updatedMemberCap").value;
     
-    var firebaseRef = firebase.database().ref("Groups/" + groupName);
-    if (myUserId == firebaseRef)
-        firebaseRef.update('groupName')({
-        groupName: updatedGroupName,
-        groupDescription: updatedGroupDescription,
-        memberCap: updatedMemberCap,
-    });
-    else
-        console.log("User does not have Permission to Edit this Group");
-        document.getElementById("groupEditorText").style.display = "block";
-
-    
-}
-
-
-/*function updateMyCreatedGroups()
-{
-    var myUserId = firebase.auth().currentUser.uid;
-    var groupName = document.getElementById("groupName").value;
-    var groupDescription = document.getElementById("groupDescription").value;
-    var memberCap = document.getElementById("memberCap").value;
-    var updatedGroupName = document.getElementById("updatedGroupName").value;
-    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
-    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
-    
-    firebase.database().ref("Groups/" + groupName + "/" + myUserId).once(
-    
-    "value", snapshot => {
+    firebase.database().ref("Groups/" + groupName + "/" + myUserId).once("value", snapshot => {
+        
     if (snapshot.exists()){
         console.log("User Access Verified");
     
-        firebaseRef.update('groupName')({
-            
+        firebaseRef.update('groupName')(
+        {  
         groupName: updatedGroupName,
         groupDescription: updatedGroupDescription,
         memberCap: updatedMemberCap,
@@ -428,8 +486,8 @@ function updateMyCreatedGroups()
         document.getElementById("groupEditorText").style.display = "block"; 
     )
 }
-*/   
-    
+   
+*/
     
     
     
@@ -437,11 +495,17 @@ function updateMyCreatedGroups()
 
 function showMyCreatedGroups()
 {
-    var database = firebase.database();
-    var myUserId = firebase.auth().currentUser.uid;
-    var myGroups = firebaseRef.collection("Groups").where("userId", "==", myUserId.uid).get()
-    document.getElementById("myCreatedGroups").innerHTML = myGroups;
+    var firebaseRef = firebase.database().ref("Groups");
+    firebaseRef.orderByChild("userId").equalTo(localStorage.userID).once("value").then((results) => {
+        results.forEach((snapshot) => {
+            console.log(snapshot.key, snapshot.val());
+            document.getElementById("myCreatedGroups").innerHTML= snapshot.key;
+      });
+    });
 }
+
+
+
 
 /*
 function showAllGroups()
@@ -456,13 +520,13 @@ function showAllGroups()
 } 
 */
 
-function deleteCreatedGroups()
+function deleteMyCreatedGroups()
 {
+    var groupName = document.getElementById("groupName").value;
     var database = firebase.database();
     var ref = database.ref("Groups/" + groupName);
-    var myUserId = firebase.auth().currentUser.uid;
     
-    ref.set(null);
+    ref.remove(groupName);
     console.log("Group Deleted");
 }
     

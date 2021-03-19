@@ -3,8 +3,6 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
          <!--Import materialize.css-->
         <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
-        <script src="global.js"></script> 
-        <script src="app.js"></script>
         <title>Edit Profile</title>
     </head>
     <body class="blue lighten-4">
@@ -58,23 +56,10 @@
         <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-auth.js"></script>
         <script src="https://www.gstatic.com/firebasejs/6.1.1/firebase-database.js"></script>
+        <script src="global.js"></script> 
+        <script src="app.js"></script>
 
         <script>
-            var config = 
-            {
-                apiKey: "AIzaSyDsCfVVy7bHnGaKoVZ_ikwzahwQycMQoMs",
-                authDomain: "user-auth-d707b.firebaseapp.com",
-                databaseURL: "https://user-auth-d707b-default-rtdb.firebaseio.com",
-                projectId: "user-auth-d707b",
-                storageBucket: "user-auth-d707b.appspot.com",
-                messagingSenderId: "549822857981",
-                appId: "1:549822857981:web:7c15df144daf04f6e7b494",
-                measurementId: "G-QH58VF587C"
-            };
-
-            firebase.initializeApp(config);
-            firebase.analytics();
-            
             var ref = firebase.database().ref('Users/'+localStorage.userID);
             ref.once("value", getProfile, errorProfile);
 

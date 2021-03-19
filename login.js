@@ -14,3 +14,13 @@ loginForm.addEventListener('click', (e) => {
     window.location.href = "index.html";  
   });
 });
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    console.log(user);
+    var user = firebase.auth().currentUser.uid; 
+    // User is signed in.
+  } else {
+    // No user is signed in.
+  }
+});
