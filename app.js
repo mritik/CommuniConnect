@@ -440,7 +440,8 @@ function updateMyCreatedGroups()
     var firebaseRef = firebase.database().ref("Groups");
 
     
-    console.log(localStorage.userID);
+    console.log('user = ' + localStorage.userID + ', groupName = ' + groupName);
+    
     firebase.database().ref("Groups/" + groupName + "/userId/" + localStorage.userID).once("value", snapshot => {
         
         if (snapshot.exists()){
