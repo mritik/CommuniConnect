@@ -437,62 +437,29 @@ function updateMyCreatedGroups()
     var updatedGroupName = document.getElementById("updatedGroupName").value;
     var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
     var updatedMemberCap = document.getElementById("updatedMemberCap").value;
-    var firebaseRef = firebase.database().ref("Groups");
-
+    var groupRef = firebase.database().ref("Groups/" + groupName);
+    var myUser = localStorage.userID;
     
-    console.log('user = ' + localStorage.userID + ', groupName = ' + groupName);
-    
-    firebase.database().ref("Groups/" + groupName + "/userId/" + localStorage.userID).once("value", snapshot => {
-        
-        if (snapshot.exists()){
-            console.log("User Access Verified");
+    console.log('user = ' + myUser + ', groupName = ' + groupName);
+    console.log('groupRef = ' + groupRef);
 
-            firebaseRef.child(groupName).update({'groupName' : updatedGroupName, 'groupDescription' : updatedGroupDescription,'memberCap' : updatedMemberCap})
-            document.getElementById("groupEditorText").style.display = "block"; 
-        }
-        else
-            console.log("User does not have Permission to Edit this Group");
-            console.log(snapshot.key);
+    groupRef.once("value", function(snapshot) {
+      snapshot.forEach(function(child) {
+          //console.log('key=' + child.key + ', value=' + child.val());
+          if(child.key == 'userId' && child.val() == myUser) {
+            groupRef.update ({
+               "groupName": updatedGroupName,
+               "groupDescription": updatedGroupDescription,
+               "memberCap": updatedMemberCap
+            });
+            return;
+          }
+      });
     });
 
-}
-
-
-/*
-function updateMyCreatedGroups()
-{
-    var myUserId = firebase.auth().currentUser.uid;
-    var groupName = document.getElementById("groupName").value;
-    var groupDescription = document.getElementById("groupDescription").value;
-    var memberCap = document.getElementById("memberCap").value;
-    var updatedGroupName = document.getElementById("updatedGroupName").value;
-    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
-    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
-    
-    firebase.database().ref("Groups/" + groupName + "/" + myUserId).once("value", snapshot => {
-        
-    if (snapshot.exists()){
-        console.log("User Access Verified");
-    
-        firebaseRef.update('groupName')(
-        {  
-        groupName: updatedGroupName,
-        groupDescription: updatedGroupDescription,
-        memberCap: updatedMemberCap,
-       
-        }
-    )}};
-    else
-        console.log("User does not have Permission to Edit this Group");
-        document.getElementById("groupEditorText").style.display = "block"; 
-    )
-}
-   
-*/
-    
-    
-    
-    
+    console.log("User does not have Permission to Edit this Group");
+    return;
+}   
 
 function showMyCreatedGroups()
 {
