@@ -42,13 +42,19 @@
         <br><br><br>
         <div class="container">
             <div class="col s12 m6 center-align">
-              <div class="card blue darken-1 card-panel hoverable centerdiv">
+              <div class="card blue darken-1 card-panel hoverable centerdiv" style="height: 600px; overflow:scroll;">
                 <div class="card-content white-text">
                   <span class="card-title">Groups You Created</span>
-                    <p>Your Created Groups Appear Here: </p>
-                    
-                    <p id="myCreatedGroups"></p>
-                    
+                    <p>Information on Your Created Groups Appear Here: </p>
+                    <table class="centered highlight responsive-table" id="myCreatedGroupsTable" border = "1px solid black" cellpadding="2">
+                        <tr></tr>
+                        <tr>
+                            <th style="width: 100px;"><b>Name</b></th>
+                            <th style="width: 100px;"><b>Description</b></th>
+                            <th style="width: 100px;"><b>Member Cap</b></th>
+                        </tr>
+                        <tr></tr>
+                    </table>
                     <br>
                 </div>
               </div>
@@ -59,7 +65,7 @@
         <br>
         <div class="container">
             <div class="col s12 m6 center-align">
-              <div class="card blue darken-1 card-panel hoverable centerdiv" style="height: 600px;">
+              <div class="card blue darken-1 card-panel hoverable centerdiv" style="height: 600px; overflow:scroll;">
                 <div class="card-content white-text">
                   <span class="card-title">Edit Created Groups</span>
                     <p id="myEditCreatedGroups"></p>

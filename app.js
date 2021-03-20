@@ -289,23 +289,6 @@ function signIn()
         });
     }
 }
-/*
-function checkUserSignedIn()
-{
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-        console.log("User Signed In")
-        }
-        else {
-        console.log("User Not Signed In")
-        window.location = 'signIn.html';
-        }
-    })
-    
-    
-    
-}
-*/
 
 function saveProfile()
 {
@@ -428,61 +411,27 @@ function signUpGroup()
             document.getElementById("groupCreationText").style.display = "block";
             console.log("Group Created");
             window.open("page1.html");
-    }
-
-        
+    }       
 }
 
 function doesGroupExist()
 {
     var groupName = document.getElementById("groupName").value;
-    var groupNameRef = firebase.database().ref("Groups/" + groupName + "/groupName");
+    var groupNameRef = firebase.database().ref("Groups");
 
     
-    groupNameRef.once("value", function(snapshot) {
-      snapshot.forEach(function(child) {
-          if(child.key == 'groupName' && child.val() == groupName) {
+        groupNameRef.once("value")
+          .then(function(snapshot) {
+            var hasGroupName = snapshot.hasChild(groupName);
+            
+          if(hasGroupName == true) {
                document.getElementById("groupErrorText").style.display = "block";
             return;
-          }
-      });
+          }else{
+            signUpGroup();
+          } 
     });
-    signUpGroup();
-
-
-        
 }
-/*
-function updateMyCreatedGroups()
-{
-    var groupName = document.getElementById("groupName").value;
-    var updatedGroupName = document.getElementById("updatedGroupName").value;
-    var updatedGroupDescription = document.getElementById("updatedGroupDescription").value;
-    var updatedMemberCap = document.getElementById("updatedMemberCap").value;
-    var groupRef = firebase.database().ref("Groups/" + groupName);
-    var myUser = localStorage.userID;
-    
-    console.log('user = ' + myUser + ', groupName = ' + groupName);
-    console.log('groupRef = ' + groupRef);
-
-    groupRef.once("value", function(snapshot) {
-      snapshot.forEach(function(child) {
-          if(child.key == 'userId' && child.val() == myUser) {
-            groupRef.update ({
-               "groupName": updatedGroupName,
-               "groupDescription": updatedGroupDescription,
-               "memberCap": updatedMemberCap
-            });
-               document.getElementById("groupEditorText").style.display = "block";
-            return;
-          }
-      });
-    });
-
-    console.log("User does not have Permission to Edit this Group")
-    return;
-}   
-*/
 
 function updateMyCreatedGroups()
 {
@@ -510,43 +459,44 @@ function updateMyCreatedGroups()
             }
             groupsRef.child(updatedGroupName).set(groupData);
             document.getElementById("groupEditorText").style.display = "block";
+            document.getElementById("permissionsText").style.display = "none";
+            window.location.reload();
+            return;
+          }else{
+            console.log("User does not have Permission to Edit this Group")
+            document.getElementById("permissionsText").style.display = "block";
+            document.getElementById("groupEditorText").style.display = "none";
             return;
           }
       });
     });
-
-    console.log("User does not have Permission to Edit this Group")
-    document.getElementById("permissionsText").style.display = "block";
-    document.getElementById("groupEditorText").style.display = "none";
-    return;
 }  
 
 function showMyCreatedGroups()
 {
-    var firebaseRef = firebase.database().ref("Groups");
-    firebaseRef.orderByChild("userId").equalTo(localStorage.userID).once("value").then((results) => {
+    var groupsRef = firebase.database().ref("Groups");
+    var myUser = localStorage.userID;
+    groupsRef.orderByChild("userId").equalTo(myUser).once("value").then((results) => {
         results.forEach((snapshot) => {
             console.log(snapshot.key, snapshot.val());
-            document.getElementById("myCreatedGroups").innerHTML= snapshot.key;
+            var groupData = snapshot.val();
+            var groupNme = groupData.groupName;
+            var groupDesc = groupData.groupDescription;
+            var memCap = groupData.memberCap;
+            console.log("groupName = " + groupNme + ", groupDescription = " + groupDesc + ", memCap = " + memCap)
+            var table = document.getElementById("myCreatedGroupsTable");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var rowStr = '<tr>' +
+                '<td style="width: 100px;">' + groupNme + '</td>' +
+                '<td style="width: 100px;">' + groupDesc + '</td>' +
+                '<td style="width: 100px;">' + memCap + '</td>' +
+                '</tr>';
+            console.log("rowStr = " + rowStr);
+            row.innerHTML= rowStr;
+        })
       });
-    });
 }
-
-
-
-
-/*
-function showAllGroups()
-{
-    var allGroups = firebase.database().ref("Groups");
-    allGroups.on('value', (snapshot) => {
-        const data = snapshot.val();
-        document.getElementById("myJoinedGroups").innerHTML = data;
-    });
-
-    
-} 
-*/
 
 function deleteMyCreatedGroups()
 {
@@ -565,15 +515,18 @@ function deleteMyCreatedGroups()
             groupRef.set(null)
             document.getElementById("groupDeletedText").style.display = "block";
             document.getElementById("permissionsText").style.display = "none";
+            window.location.reload();
             return;
+          }else{
+            console.log("User does not have Permission to Delete this Group");
+            document.getElementById("permissionsText").style.display = "block";
+            document.getElementById("groupEditorText").style.display = "none";
+            return;
+              
           }
+
       });
     });
-
-    console.log("User does not have Permission to Delete this Group");
-    document.getElementById("permissionsText").style.display = "block";
-    document.getElementById("groupEditorText").style.display = "none";
-    return;
 }
     
     
