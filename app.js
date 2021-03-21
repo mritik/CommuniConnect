@@ -1,3 +1,4 @@
+//Initializing Firebase App
 var config = 
     {
         apiKey: "AIzaSyDsCfVVy7bHnGaKoVZ_ikwzahwQycMQoMs",
@@ -10,7 +11,7 @@ var config =
         measurementId: "G-QH58VF587C"
     };
     firebase.initializeApp(config); 
-
+//I was going to do something with this but for now it just logs whether the User is logged in
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     console.log(user + "Signed In")
@@ -31,12 +32,12 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
     return firebase.auth().signInWithEmailAndPassword(userInEmail, userInEmail);
   })
   .catch((error) => {
-    // Handle Errors here.
+    //Errors
     var errorCode = error.code;
     var errorMessage = error.message;
   });
 
-
+//All the check functions just make sure something valid was entered
 function checkUserFirstName()
 {
     var userSurname = document.getElementById("userFirstName").value;
@@ -167,7 +168,7 @@ function checkUpdatedMemberCap()
         document.getElementById("memberCapError").style.display = "none";
 }
 
-
+//Signs Up users taking input values entered and creating credentials
 function signUp()
 {
     var userFirstName = document.getElementById("userFirstName").value;
@@ -178,6 +179,7 @@ function signUp()
     var userEmailFormatValidate = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     var userPasswordFormatValidate = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}/;      
 
+    //Matching to make sure inputs are in proper format
     var checkUserFirstNameValid = userFirstName.match(userFirstNameFormatValidate);
     var checkUserEmailValid = userEmail.match(userEmailFormatValidate);
     var checkUserPasswordValid = userPassword.match(userPasswordFormatValidate);
@@ -191,6 +193,7 @@ function signUp()
     else if(checkUserPasswordValid == null)
         return checkUserPassword();
     else
+        //Creating User and saving data
         firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).then((success) => 
         {
             var user = firebase.auth().currentUser;
@@ -198,7 +201,7 @@ function signUp()
 
             if (user != null) 
                 uid = user.uid;
-            
+            //The child where this data is saved
             var ref = firebase.database().ref('Users');
             var userData = 
             {
@@ -223,6 +226,7 @@ function signUp()
         });
 }
 
+//Checking Email and Password Formats and showing a message if incorrect
 function checkUserInEmail()
 {
     var userInEmail = document.getElementById("userInEmail");
@@ -249,6 +253,7 @@ function checkUserInPassword()
         document.getElementById("userInPasswordError").style.display = "none";
 }
 
+//Signs in users taking input values and matching with saved credentials in database
 function signIn()
 {
     var userInEmail = document.getElementById("userInEmail").value;
@@ -278,6 +283,7 @@ function signIn()
                     window.location = 'index.html';
                 }
             });
+        //Errors will be logged in console and shown to user (eg: User not found in database)
         }).catch((error) => 
         {
             var errorCode = error.code;
@@ -289,7 +295,7 @@ function signIn()
         });
     }
 }
-
+//Take input values from user and saves a user profile (Setting data not updating)
 function saveProfile()
 {
     let userFirstName = document.getElementById("userFirstName").value 
@@ -319,7 +325,7 @@ function saveProfile()
         window.location="index.html";
     }
 }
-
+//User sign out function
 function signOut()
 {
     firebase.auth().signOut().then(function() 
@@ -331,30 +337,6 @@ function signOut()
         let errorMessage = error.message;
         console.log(errorMessage);
     });
-}
-
-function checkUserFirstName()
-{
-    var userSurname = document.getElementById("userFirstName").value;
-    var flag = false;
-    if(userSurname === "")
-        flag = true;
-    if(flag)
-        document.getElementById("userFirstNameError").style.display = "block";
-    else
-        document.getElementById("userFirstNameError").style.display = "none";
-}
-
-function checkUserSurname()
-{
-    var userSurname = document.getElementById("userSurname").value;
-    var flag = false;
-    if(userSurname === "")
-        flag = true;
-    if(flag)
-        document.getElementById("userSurnameError").style.display = "block";
-    else
-        document.getElementById("userSurnameError").style.display = "none";
 }
 
 function checkGroupName()
@@ -392,7 +374,7 @@ function checkMemberCap()
     else
         document.getElementById("memberCap").style.display = "none";
 }
-
+//Creates Group and saves info from inputs in database under child "Groups"
 function signUpGroup()
 {
     var groupName = document.getElementById("groupName").value;
@@ -400,6 +382,7 @@ function signUpGroup()
     var memberCap = document.getElementById("memberCap").value;
     {
         var firebaseRef = firebase.database().ref("Groups");
+        //Data Saved
         var groupData = 
         {
             groupName: groupName,
@@ -409,30 +392,32 @@ function signUpGroup()
         }
             firebaseRef.child(groupName).set(groupData);
             document.getElementById("groupCreationText").style.display = "block";
+            document.getElementById("groupErrorText").style.display = "none";
             console.log("Group Created");
             window.open("page1.html");
     }       
 }
-
+//Function checks whether a group already exists in the database and shows an error message if true
 function doesGroupExist()
 {
     var groupName = document.getElementById("groupName").value;
     var groupNameRef = firebase.database().ref("Groups");
 
-    
+        //getting snapshot and looking for Group Name 
         groupNameRef.once("value")
           .then(function(snapshot) {
             var hasGroupName = snapshot.hasChild(groupName);
             
           if(hasGroupName == true) {
                document.getElementById("groupErrorText").style.display = "block";
+               document.getElementById("groupCreationText").style.display = "none";
             return;
           }else{
             signUpGroup();
           } 
     });
 }
-
+//Updating data
 function updateMyCreatedGroups()
 {
     var groupName = document.getElementById("groupName").value;
@@ -448,7 +433,9 @@ function updateMyCreatedGroups()
 
     groupRef.once("value", function(snapshot) {
       snapshot.forEach(function(child) {
+          //Checks if the current user's id is the same as the creator of the group's (if true execute code, else show error)
           if(child.key == 'userId' && child.val() == myUser) {
+            //Deleting data and rewriting it
             groupRef.set(null) 
             var groupData = 
             {
@@ -471,7 +458,7 @@ function updateMyCreatedGroups()
       });
     });
 }  
-
+//Shows groups created by user
 function showMyCreatedGroups()
 {
     var groupsRef = firebase.database().ref("Groups");
@@ -480,10 +467,12 @@ function showMyCreatedGroups()
         results.forEach((snapshot) => {
             console.log(snapshot.key, snapshot.val());
             var groupData = snapshot.val();
+            //Getting the values of each node from snapshot
             var groupNme = groupData.groupName;
             var groupDesc = groupData.groupDescription;
             var memCap = groupData.memberCap;
             console.log("groupName = " + groupNme + ", groupDescription = " + groupDesc + ", memCap = " + memCap)
+            //Creating html table and inserting rows
             var table = document.getElementById("myCreatedGroupsTable");
             var rowCount = table.rows.length;
             var row = table.insertRow(rowCount);
@@ -497,9 +486,10 @@ function showMyCreatedGroups()
         })
       });
 }
-
+//Function for deleting groups created by user
 function deleteMyCreatedGroups()
 {
+    //setting variables
     var groupName = document.getElementById("groupName").value;
     var groupRef = firebase.database().ref("Groups/" + groupName);
     var firebaseRef = firebase.database().ref("Groups");
@@ -508,6 +498,7 @@ function deleteMyCreatedGroups()
     console.log('user = ' + myUser + ', groupName = ' + groupName);
     console.log('groupRef = ' + groupRef);
 
+    //Getting snapshot of the data, comparing User ids and then setting group as null
     groupRef.once("value", function(snapshot) {
       snapshot.forEach(function(child) {
           console.log('key=' + child.key + ', value=' + child.val());
