@@ -486,6 +486,34 @@ function showMyCreatedGroups()
         })
       });
 }
+/*
+function showAllCreatedGroups()
+{
+    var groupsRef = firebase.database().ref("Groups");
+    groupsRef.orderByChild("groupName").once("value").then((results) => {
+        results.forEach((snapshot) => {
+            console.log(snapshot.key, snapshot.val());
+            var groupData = snapshot.val();
+            //Getting the values of each node from snapshot
+            var groupNme = groupData.groupName;
+            var groupDesc = groupData.groupDescription;
+            var memCap = groupData.memberCap;
+            console.log("groupName = " + groupNme + ", groupDescription = " + groupDesc + ", memCap = " + memCap)
+            //Creating html table and inserting rows
+            var table = document.getElementById("allGroupsTable");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var rowStr = '<tr>' +
+                '<td style="width: 100px;">' + groupNme + '</td>' +
+                '<td style="width: 100px;">' + groupDesc + '</td>' +
+                '<td style="width: 100px;">' + memCap + '</td>' +
+                '</tr>';
+            console.log("rowStr = " + rowStr);
+            row.innerHTML= rowStr;
+        });
+    });
+}
+*/
 //Function for deleting groups created by user
 function deleteMyCreatedGroups()
 {

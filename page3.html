@@ -15,11 +15,16 @@
       <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
       <script src="app.js"></script>
       <script src="global.js"></script>
+      <!-- Firechat -->
+      <link rel="stylesheet" href="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.css" />
+      <script src="https://cdn.firebase.com/libs/firechat/3.0.1/firechat.min.js"></script>
 
 
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
       <link rel="stylesheet" href="styles.css"/>
+      <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
     </head>
 
 
@@ -34,9 +39,7 @@
                 <li class="divider" tabindex="1"></li>
                 <li><a href="page2.html"><i class="material-icons">search</i>Explore</a></li>
                 <li class="divider" tabindex="1"></li>
-                <li><a href="page3.html"><i class="material-icons">notifications</i>Notifs</a></li>
-                <li class="divider" tabindex="1"></li>
-                <li><a href="page4.html"><i class="material-icons">messages</i>Messages</a></li>
+                <li><a href="page3.html"><i class="material-icons">messages</i>Messages</a></li>
               </ul>
 
         <nav class="blue darken-1">
@@ -52,7 +55,8 @@
             </div>
         </nav>
         <hr>
-        <h3 class="center-align blue-text darken-1">Notifications</h3>
+        <h3 class="center-align blue-text darken-1">Messages</h3>
+        <h5 class="center-align bold-text">This Page is Under Development and Not Yet Finished</h5>
         
         
         <br><br><br>
@@ -60,21 +64,19 @@
             <div class="col s12 m6 center-align">
               <div class="card blue darken-1 card-panel hoverable centerdiv">
                 <div class="card-content white-text">
-                  <span class="card-title">Latest Notifications</span>
-                    <p>Received Message from Alex </p>
-                    <br>
-                    <p>Meeting with Science Teacher in 5 mins </p>
-                    <br>
-                    <p>Teacher posted Homework for Computer Science </p>
-                    <br>
-                    <p>Teacher posted Homework for Math </p>
-                    <br>
-                    <p>Teacher posted Homework for English </p>
-                    <br>
+                  <span class="card-title">Messages</span>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="searchUser" type="text" class="input-field" placeholder="Search Users..." onclick="searchUser()">
+                        </div>
+                    </div>
+                    <input id="message" type="text" placeholder="Send Message..." class="validate">
+                    <button id="searchUserBtn" type="button" class="input-field"><i class="material-icons center">send</i></button>
                 </div>
               </div>
             </div>
         </div>
+        
         <br>
         <br>
         <br>
